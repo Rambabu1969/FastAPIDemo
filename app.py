@@ -17,9 +17,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 3. load the model
-model = pickle.load(open("rf.pkl", "rb"))
-
 # 4. Index route, opens automatically on http://127.0.0.1:8000
 @app.get('/')
 def index():
