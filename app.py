@@ -1,12 +1,10 @@
-# Download and Install Python from https://www.python.org/downloads
-# pip install fastapi uvicorn scikit-learn
 
 # 1. Library imports
 import uvicorn
 from fastapi import FastAPI
-
 from fastapi.middleware.cors import CORSMiddleware
 import pickle
+from house import house
 
 # 2. Create the app object
 app = FastAPI()
@@ -20,22 +18,37 @@ app.add_middleware(
 )
 
 # 3. load the model
-rgModel = pickle.load(open("reg.pkl", "rb"))
+model = pickle.load(open("rf.pkl", "rb"))
 
 # 4. Index route, opens automatically on http://127.0.0.1:8000
 @app.get('/')
 def index():
-    return {'message': 'Hello, World'}
+    return {'message': 'Hello World'}
 
 @app.get("/predictPrice")
-def gePredictPrice(Area: int, BedRooms: int, BathRooms: int):
+def getPredictPrice(Area: int, BedRooms: int, BathRooms: int):
+    rgModel = pickle.load(open("reg.pkl", "rb"))
+    
     prediction = rgModel.predict([[Area,BedRooms,BathRooms]])
-    return {'Price': prediction[0]}
+    
+    return {
+        'Price': prediction[0]
+    }
+
+@app.post("/predict")
+def predictHousePrice(data: house):
+    rgModel = pickle.load(open("reg.pkl", "rb"))
+
+    data = data.dict()
+    prediction = rgModel.predict([[data["Area"],data["BedRooms"],data["BathRooms"]]])
+    
+    return {
+        'Price': prediction[0]
+    }
 
 # 5. Run the API with uvicorn
+#    Will run on http://127.0.0.1:8000
 if __name__ == '__main__':
-    uvicorn.run(app, port=80, host='0.0.0.0')
+    uvicorn.run(app, port=8080, host='0.0.0.0')
     
-# Run Program: uvicorn app:app --host 0.0.0.0 --port 80
-# Browse URL: http://127.0.0.1/predictPrice?Area=1400&BedRooms=3&BathRooms=3
-
+#uvicorn app:app --reload
