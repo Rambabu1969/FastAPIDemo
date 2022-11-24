@@ -1,0 +1,20 @@
+How to Clone and Run an Angular App on Your Machine
+
+Procedure:
+Step 1: Install Node JS from https://nodejs.org
+Check the version of Node.js installed
+node --version
+Check the version of npm installed:
+npm --version
+Step 2: Install Angular CLI
+npm install -g @angular/cli
+Check the Angular CLI version
+ng version
+Step 3: install git for windows at https://git-scm.com/download/win
+Step 4: Create Project Folder "AngularDemo"
+Step 5: Go to Folder "AngularDemo"
+Step 6: git clone <git project path>
+Step 7: Install all package and dependencies
+npm install
+Step 8: Run Project
+ng serve -o
